@@ -5,12 +5,12 @@
     # pulled from https://github.com/n64decomp/sm64#step-1-install-dependencies-1
     nativeBuildInputs = [
       pkgs.gnumake42 # v4.4 breaks the build!
-      pkgs.coreutils
-      pkgs.pkg-config
+      # pkgs.coreutils
+      # pkgs.pkg-config
 
       # ? tehzz/n64-dev/mips64-elf-binutils
       # X pkgs.binutils
-      (import ./binutils-mips64-elf.nix (with pkgs; {inherit lib stdenv gnumake gcc;}))
+      # (import ./binutils-mips64-elf.nix (with pkgs; {inherit lib stdenv gnumake gcc;}))
     ];
 
     shellHook = ''
