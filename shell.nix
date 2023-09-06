@@ -1,31 +1,23 @@
-{ pkgs ? import <nixpkgs> {
-    # https://nixos.org/manual/nixpkgs/stable/#sec-cross-usage
-    crossSystem = (import <nixpkgs/lib>).systems.examples.mips-linux-gnu;
-  }
-}:
-
-let
-  hostPlatformCheck =
-    with pkgs.stdenv.hostPlatform;
-    if isMips then null
-    else abort "cross platform target must be a MIPS target";
-in
-pkgs.callPackage
-  ({ mkShell
-   , gnumake42
-   }: mkShell {
+{ pkgs ? import <nixpkgs> { system = "x86_64-darwin"; } }:
+  pkgs.mkShell {
+    
+    # nativeBuildInputs is usually what you want -- tools you need to run
     # pulled from https://github.com/n64decomp/sm64#step-1-install-dependencies-1
-    depsBuildBuild = [
-      gnumake42 # v4.4 breaks the build!
+    nativeBuildInputs = [
+      pkgs.gnumake42 # v4.4 breaks the build!
+      pkgs.coreutils
+      pkgs.pkg-config
+
+      # ? tehzz/n64-dev/mips64-elf-binutils
+      # X pkgs.binutils
+      (import ./binutils-mips64-elf.nix (with pkgs; {inherit lib stdenv gnumake gcc;}))
     ];
-    strictDeps = true;
 
     shellHook = ''
-      NEW_PATH_DIR=$(mktemp -d)
-      export PATH="$NEW_PATH_DIR:$PATH"
-
+      GMAKE_DIR=$(mktemp -d)
       MAKE_PATH=$(which make)
-      ln -s $MAKE_PATH $NEW_PATH_DIR/gmake
+      ln -s $MAKE_PATH $GMAKE_DIR/gmake
+      export PATH="$GMAKE_DIR:$PATH"
     '';
-  })
-{ }
+    # gmake VERSION=us -j8
+}
