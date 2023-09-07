@@ -1,3 +1,5 @@
+# based on https://github.com/tehzz/homebrew-n64-dev/blob/master/Formula/mips64-elf-binutils.rb
+
 {
   lib,
   stdenv,
