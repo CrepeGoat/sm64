@@ -1,0 +1,16 @@
+3505c
+	      cpp_error (pfile, CPP_DL_ERROR,
+            "'##' cannot appear at either end of a macro expansion");
+.
+3490c
+	      cpp_error (pfile, CPP_DL_ERROR,
+            "'##' cannot appear at either end of a macro expansion");
+.
+3364,3365d
+213c
+				  "'##' cannot appear at either end of __VA_OPT__");
+.
+184c
+			  "'##' cannot appear at either end of __VA_OPT__");
+.
+93,95d

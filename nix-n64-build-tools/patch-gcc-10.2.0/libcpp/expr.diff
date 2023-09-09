@@ -1,0 +1,11 @@
+805c
+				      virtual_location, 0, CPP_OPTION (pfile, cplusplus) 
+                ? N_("use of C++11 long long integer constant")
+                        : N_("use of C99 long long integer constant"));
+.
+802c
+				   0, CPP_OPTION (pfile, cplusplus) 
+                ? N_("use of C++11 long long integer constant")
+                        : N_("use of C99 long long integer constant"));
+.
+796,799d
