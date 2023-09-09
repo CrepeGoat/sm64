@@ -4,9 +4,6 @@
   lib,
   stdenv,
 
-  patch,
-
-  gcc,
   gmp,
   isl,
   libmpc,
@@ -17,6 +14,7 @@
 let
   config_flags = [
     "--disable-debug"
+    # see https://nixos.org/manual/nixpkgs/stable/#ssec-configure-phase
     "--disable-dependency-tracking"
     "--disable-silent-rules"
     # --infodir=#{info}
@@ -24,8 +22,8 @@ let
     # --libdir=#{lib}/mip64-elf-gcc/#{version_suffix}
     "--target=mips64-elf"
     "--with-arch=vr4300"
-    "--enable-languages=c "
-    "--without-headers "
+    "--enable-languages=c"
+    "--without-headers"
     "--with-newlib"
     "--with-gnu-as=mips64-elf-as"
     "--with-gnu-ld=mips64-elf-ld"
@@ -46,6 +44,7 @@ let
     "--disable-multilib"
     "--disable-nls"
     "--disable-rpath"
+    # see https://nixos.org/manual/nixpkgs/stable/#ssec-configure-phase
     "--disable-static"
     "--disable-threads"
     "--disable-win32-registry"
@@ -71,13 +70,12 @@ in stdenv.mkDerivation rec {
 
   src = (builtins.fetchTarball {
     url = "https://ftp.gnu.org/gnu/gcc/gcc-${version}/gcc-${version}.tar.xz";
-    sha256 = "";
+    sha256 = "0l1n916az5ygp3jamrd6qj0j5kq3nfl8n79rvj94g3rj85jdpi64";
   });
-  nativeBuildInputs = [patch];
-  buildInputs = [gcc gmp isl libmpc mpfr binutils-mips64-elf];
+  # TODO are these wrong?
+  nativeBuildInputs = [gmp isl libmpc mpfr binutils-mips64-elf];
+  buildInputs = [gmp isl libmpc mpfr binutils-mips64-elf];
 
-  preConfigure = "export CC=gcc";
-  configureScript = "${src}/configure";
-  configureArgs = config_flags;
+  configureFlags = config_flags;
   patches = [./gcc-10.2.0.patch];
 }
