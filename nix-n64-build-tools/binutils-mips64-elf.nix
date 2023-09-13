@@ -1,12 +1,12 @@
 # based on https://github.com/tehzz/homebrew-n64-dev/blob/master/Formula/mips64-elf-binutils.rb
 
-{
-  lib,
-  stdenv,
-  gnumake,
-  gcc,
-  # gettext,
-  # zlib,
+{ lib
+, stdenv
+, gnumake
+, gcc
+  # , gettext
+  # , zlib
+,
 }:
 
 let
@@ -32,15 +32,16 @@ let
     "--disable-werror"
   ];
 
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   version = "2.37";
   pname = "binutils-mips64-elf";
   meta = {
     description = "GNU binutils, compiled for the mips64-elf target.";
     longDescription = ''
-    GNU binutils contains various GNU compilers, assemblers, linkers, debuggers,
-    etc., plus their support routines, definitions, and documentation. Compiled
-    for the mips64-elf target.
+      GNU binutils contains various GNU compilers, assemblers, linkers, debuggers,
+      etc., plus their support routines, definitions, and documentation. Compiled
+      for the mips64-elf target.
     '';
     homepage = "https://www.gnu.org/software/binutils/";
   };
@@ -49,13 +50,9 @@ in stdenv.mkDerivation rec {
     url = "https://ftp.gnu.org/gnu/binutils/binutils-${version}.tar.xz";
     sha256 = "1p6g02h5l0r5ihiaa3mnayl0njvi1yr8ybidsx7b3zvpdgqqa738";
   });
-  nativeBuildInputs = [gnumake gcc];
-  # buildInputs = [gettext zlib];
+  nativeBuildInputs = [ gnumake gcc ];
   buildPhase = ''
     CC=gcc ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
     make
   '';
-  # installPhase = ''
-  #   make install
-  # '';
 }

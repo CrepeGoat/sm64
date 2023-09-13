@@ -1,14 +1,13 @@
 # based on https://github.com/tehzz/homebrew-n64-dev/blob/master/Formula/mips64-elf-gcc.rb
 
-{
-  lib,
-  stdenv,
-
-  gmp,
-  isl,
-  libmpc,
-  mpfr,
-  binutils-mips64-elf,
+{ lib
+, stdenv
+, gmp
+, isl
+, libmpc
+, mpfr
+, binutils-mips64-elf
+,
 }:
 
 let
@@ -54,15 +53,16 @@ let
     "--without-included-gettext"
   ];
 
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   version = "10.2.0";
   pname = "gcc-mips64-elf";
   meta = {
     description = "GNU GCC C toolchain for the mips64-elf target.";
     longDescription = ''
-    The GNU Compiler Collection includes front ends for C, C++, Objective-C,
-    Fortran, Ada, Go, and D, as well as libraries for these languages
-    (libstdc++, ...).  Compiled for the mips64-elf target.
+      The GNU Compiler Collection includes front ends for C, C++, Objective-C,
+      Fortran, Ada, Go, and D, as well as libraries for these languages
+      (libstdc++, ...).  Compiled for the mips64-elf target.
     '';
     homepage = "https://gcc.gnu.org/";
     changelog = "https://gcc.gnu.org/gcc-10/changes.html";
@@ -73,10 +73,10 @@ in stdenv.mkDerivation rec {
     sha256 = "0l1n916az5ygp3jamrd6qj0j5kq3nfl8n79rvj94g3rj85jdpi64";
   });
   # TODO are these wrong?
-  nativeBuildInputs = [gmp isl libmpc mpfr binutils-mips64-elf];
-  buildInputs = [gmp isl libmpc mpfr binutils-mips64-elf];
+  nativeBuildInputs = [ gmp isl libmpc mpfr ];
+  buildInputs = [ binutils-mips64-elf ];
 
-  patches = [./gcc-10.2.0.patch];
+  patches = [ ./gcc-10.2.0.patch ];
   # Note: needs to build from a different directory, for some reason
   preConfigure = ''
     mkdir ./_build
