@@ -76,6 +76,13 @@ in stdenv.mkDerivation rec {
   nativeBuildInputs = [gmp isl libmpc mpfr binutils-mips64-elf];
   buildInputs = [gmp isl libmpc mpfr binutils-mips64-elf];
 
-  configureFlags = config_flags;
   patches = [./gcc-10.2.0.patch];
+  # Note: needs to build from a different directory, for some reason
+  preConfigure = ''
+    mkdir ./_build
+    cd ./_build
+  '';
+  configureScript = "../configure";
+  configureFlags = config_flags;
+  dontStrip = true;
 }
