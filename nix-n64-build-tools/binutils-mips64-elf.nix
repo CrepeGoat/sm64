@@ -1,9 +1,8 @@
-{ lib
-, stdenv
-, gnumake
-, gcc
-# , gettext
-# , zlib
+{ pkgs ? import <nixpkgs> { system = "x86_64-darwin"; }
+, lib ? pkgs.lib
+, stdenv ? pkgs.stdenv
+, gnumake ? pkgs.gnumake
+, gcc ? pkgs.gcc12
 ,
 }:
 
