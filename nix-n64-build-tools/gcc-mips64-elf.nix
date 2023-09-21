@@ -84,5 +84,8 @@ stdenv.mkDerivation rec {
   '';
   configureScript = "../configure";
   configureFlags = config_flags;
+  preBuild = ''
+    buildFlagsArray+=(-j$NIX_BUILD_CORES)
+  '';
   dontStrip = true;
 }
