@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ gnumake ];
   # buildInputs = [gettext zlib];
   buildPhase = ''
-    CC=clang ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
+    ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
     make -j$NIX_BUILD_CORES
   '';
   # installPhase = ''
