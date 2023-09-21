@@ -51,7 +51,7 @@ stdenv.mkDerivation rec {
   # buildInputs = [gettext zlib];
   buildPhase = ''
     CC=gcc ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
-    make
+    make -j$NIX_BUILD_CORES
   '';
   # installPhase = ''
   #   make install
