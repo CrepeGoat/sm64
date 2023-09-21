@@ -1,4 +1,18 @@
 { pkgs ? import <nixpkgs> { system = "x86_64-darwin"; } }:
+
+let
+  binutils-mips64-elf = (
+    import ./nix-n64-build-tools/binutils.nix {
+      inherit (pkgs) lib stdenv gnumake;
+      target = "mips64-elf";
+    }
+  );
+  gcc-mips64-elf = (import ./nix-n64-build-tools/gcc-mips64-elf.nix {
+    inherit (pkgs) lib stdenv gmp isl libmpc mpfr;
+    inherit binutils-mips64-elf;
+  });
+in
+
 pkgs.mkShell {
 
   # nativeBuildInputs is usually what you want -- tools you need to run
@@ -8,9 +22,8 @@ pkgs.mkShell {
     pkgs.coreutils
     pkgs.pkg-config
 
-    # ? tehzz/n64-dev/mips64-elf-binutils
-    # X pkgs.binutils
-    (import ./nix-n64-build-tools/binutils.nix (with pkgs; { inherit lib stdenv gnumake; target = "mips-linux-gnu"; }))
+    binutils-mips64-elf
+    gcc-mips64-elf
   ];
 
   shellHook = ''

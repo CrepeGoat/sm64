@@ -1,3 +1,5 @@
+# based on https://github.com/tehzz/homebrew-n64-dev/blob/master/Formula/mips64-elf-binutils.rb
+
 { pkgs ? import <nixpkgs> { system = "x86_64-darwin"; }
 , lib ? pkgs.lib
 , stdenv ? pkgs.stdenv
@@ -48,12 +50,8 @@ stdenv.mkDerivation rec {
     sha256 = "1p6g02h5l0r5ihiaa3mnayl0njvi1yr8ybidsx7b3zvpdgqqa738";
   });
   nativeBuildInputs = [ gnumake ];
-  # buildInputs = [gettext zlib];
   buildPhase = ''
     ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
     make -j$NIX_BUILD_CORES
   '';
-  # installPhase = ''
-  #   make install
-  # '';
 }
