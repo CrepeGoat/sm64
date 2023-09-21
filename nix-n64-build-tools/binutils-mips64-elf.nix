@@ -2,7 +2,6 @@
 , lib ? pkgs.lib
 , stdenv ? pkgs.stdenv
 , gnumake ? pkgs.gnumake
-, gcc ? pkgs.gcc12
 ,
 }:
 
@@ -47,10 +46,10 @@ stdenv.mkDerivation rec {
     url = "https://ftp.gnu.org/gnu/binutils/binutils-${version}.tar.xz";
     sha256 = "1p6g02h5l0r5ihiaa3mnayl0njvi1yr8ybidsx7b3zvpdgqqa738";
   });
-  nativeBuildInputs = [ gnumake gcc ];
+  nativeBuildInputs = [ gnumake ];
   # buildInputs = [gettext zlib];
   buildPhase = ''
-    CC=gcc ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
+    CC=clang ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
     make -j$NIX_BUILD_CORES
   '';
   # installPhase = ''

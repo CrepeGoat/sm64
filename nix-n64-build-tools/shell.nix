@@ -10,7 +10,7 @@ pkgs.mkShell {
 
     # ? tehzz/n64-dev/mips64-elf-binutils
     # X pkgs.binutils
-    (import ./binutils-mips64-elf.nix (with pkgs; { inherit lib stdenv gnumake gcc; }))
+    (import ./binutils-mips64-elf.nix (with pkgs; { inherit lib stdenv gnumake; }))
   ];
 
   shellHook = ''
