@@ -307,19 +307,19 @@ IQUE_EGCS_PATH := $(TOOLS_DIR)/ique_egcs
 IQUE_LD_PATH := $(TOOLS_DIR)/ique_ld
 
 # detect prefix for MIPS toolchain
-ifneq      ($(call find-command,mips-linux-gnu-ld),)
+# ifneq      ($(call find-command,mips-linux-gnu-ld),)
   CROSS := mips-linux-gnu-
-else ifneq ($(call find-command,mips64-linux-gnu-ld),)
-  CROSS := mips64-linux-gnu-
-else ifneq ($(call find-command,mips64-elf-ld),)
-  CROSS := mips64-elf-
-else
-  $(error Unable to detect a suitable MIPS toolchain installed)
-endif
+# else ifneq ($(call find-command,mips64-linux-gnu-ld),)
+#   CROSS := mips64-linux-gnu-
+# else ifneq ($(call find-command,mips64-elf-ld),)
+#   CROSS := mips64-elf-
+# else
+#   $(error Unable to detect a suitable MIPS toolchain installed)
+# endif
 
 AS            := $(CROSS)as
 ifeq ($(COMPILER),gcc)
-  CC          := $(CROSS)gcc
+  CC          := $(MIPS_GCC_ALIAS) #$(CROSS)gcc
 else
   ifeq ($(USE_QEMU_IRIX),1)
     IRIX_ROOT := $(TOOLS_DIR)/ido5.3_compiler
