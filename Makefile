@@ -393,14 +393,9 @@ ifeq ($(VERSION),cn)
   $(IQUE_RECOMPILED): CFLAGS = $(IQUE_CFLAGS)
 endif
 
-# Prefer clang as C preprocessor if installed on the system
-ifneq (,$(call find-command,clang))
-  CPP      := clang
-  CPPFLAGS := -E -P -x c -Wno-trigraphs -D_LANGUAGE_ASSEMBLY $(DEF_INC_CFLAGS)
-else
-  CPP      := cpp
-  CPPFLAGS := -P -Wno-trigraphs -D_LANGUAGE_ASSEMBLY $(DEF_INC_CFLAGS)
-endif
+# Use zig as C preprocessor
+CPP      := $(G++_ALIAS)
+CPPFLAGS := -E -P -x c -Wno-trigraphs -D_LANGUAGE_ASSEMBLY $(DEF_INC_CFLAGS)
 
 # Check code syntax with host compiler
 CC_CHECK := gcc
@@ -698,13 +693,13 @@ $(BUILD_DIR)/include/text_menu_strings.h: include/text_menu_strings.h.in
 	$(V)$(TEXTCONV) charmap_menu.txt $< $@
 $(BUILD_DIR)/text/%/define_courses.inc.c: text/define_courses.inc.c text/%/courses.h
 	@$(PRINT) "$(GREEN)Preprocessing: $(BLUE)$@ $(NO_COL)\n"
-	$(V)$(CPP) $(CPPFLAGS) $< -o - -I text/$*/ | $(TEXTCONV) $(BUILD_DIR)/$(CHARMAP) - $@
+	$(V)$(CPP) $(CPPFLAGS) $< -I text/$*/ | $(TEXTCONV) $(BUILD_DIR)/$(CHARMAP) - $@
 $(BUILD_DIR)/text/%/define_text.inc.c: text/define_text.inc.c text/%/courses.h text/%/dialogs.h
 	@$(PRINT) "$(GREEN)Preprocessing: $(BLUE)$@ $(NO_COL)\n"
-	$(V)$(CPP) $(CPPFLAGS) $< -o - -I text/$*/ | $(TEXTCONV) $(BUILD_DIR)/$(CHARMAP) - $@
+	$(V)$(CPP) $(CPPFLAGS) $< -I text/$*/ | $(TEXTCONV) $(BUILD_DIR)/$(CHARMAP) - $@
 $(BUILD_DIR)/text/debug_text.raw.inc.c: text/debug_text.inc.c $(BUILD_DIR)/$(CHARMAP_DEBUG)
 	@$(PRINT) "$(GREEN)Preprocessing: $(BLUE)$@ $(NO_COL)\n"
-	$(V)$(CPP) $(CPPFLAGS) $< -o - -I text/$*/ | $(TEXTCONV) $(BUILD_DIR)/$(CHARMAP_DEBUG) - $@
+	$(V)$(CPP) $(CPPFLAGS) $< -I text/$*/ | $(TEXTCONV) $(BUILD_DIR)/$(CHARMAP_DEBUG) - $@
 
 # Level headers
 $(BUILD_DIR)/include/level_headers.h: levels/level_headers.h.in
