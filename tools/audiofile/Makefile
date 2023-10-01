@@ -1,4 +1,6 @@
-CXX := g++
+include ../../util.mk
+
+CXX := $(G++_ALIAS)
 
 libaudiofile.a: audiofile.o
 	$(AR) rcs $@ $^

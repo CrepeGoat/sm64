@@ -19,7 +19,7 @@ CROSS_TARGET := mips-linux-gnu
 # CROSS_TARGET := mips64-linux-gnu
 # CROSS_TARGET := mips64-freestanding-elf
 
-GCC_ALIAS := zig cc
-G++_ALIAS := zig c++
+GCC_ALIAS := zig cc --target=x86_64-macos-none
+G++_ALIAS := zig c++ --target=x86_64-macos-none
 MIPS_GCC_ALIAS := zig cc --target=$(CROSS_TARGET)
 MIPS_G++_ALIAS := zig c++ --target=$(CROSS_TARGET)
