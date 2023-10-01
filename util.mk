@@ -14,3 +14,12 @@ endef
 
 # Returns the path to the command $(1) if exists. Otherwise returns an empty string.
 find-command = $(shell which $(1) 2>/dev/null)
+
+CROSS_TARGET := mips-linux-gnu
+# CROSS_TARGET := mips64-linux-gnu
+# CROSS_TARGET := mips64-freestanding-elf
+
+GCC_ALIAS := zig cc
+G++_ALIAS := zig c++
+MIPS_GCC_ALIAS := zig cc --target=$(CROSS_TARGET)
+MIPS_G++_ALIAS := zig c++ --target=$(CROSS_TARGET)
