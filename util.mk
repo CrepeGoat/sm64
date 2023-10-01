@@ -21,5 +21,6 @@ CROSS_TARGET := mips-linux-gnu
 
 GCC_ALIAS := zig cc
 G++_ALIAS := zig c++
+AR_ALIAS := zig ar
 MIPS_GCC_ALIAS := zig cc --target=$(CROSS_TARGET)
 MIPS_G++_ALIAS := zig c++ --target=$(CROSS_TARGET)
