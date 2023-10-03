@@ -2,6 +2,7 @@
 , lib ? pkgs.lib
 , stdenv ? pkgs.stdenv
 , gnumake ? pkgs.gnumake
+, target ? "mips-linux-gnu"
 ,
 }:
 
@@ -15,7 +16,7 @@ let
     # "--infodir=#{info}/mip64-elf-binutils/#{version_suffix}"
     # "--libdir=#{lib}/mip64-elf-binutils/#{version_suffix}"
     # "--mandir=#{man}/mip64-elf-binutils/#{version_suffix}"
-    "--target=mips64-elf"
+    "--target=${target}"
     "--with-arch=vr4300"
     "--enable-64-bit-bfd"
     "--enable-plugins"
@@ -31,13 +32,13 @@ let
 in
 stdenv.mkDerivation rec {
   version = "2.37";
-  pname = "binutils-mips64-elf";
+  pname = "${target}-binutils";
   meta = {
-    description = "GNU binutils, compiled for the mips64-elf target.";
+    description = "GNU binutils, compiled for the ${target} target.";
     longDescription = ''
       GNU binutils contains various GNU compilers, assemblers, linkers, debuggers,
       etc., plus their support routines, definitions, and documentation. Compiled
-      for the mips64-elf target.
+      for the ${target} target.
     '';
     homepage = "https://www.gnu.org/software/binutils/";
   };
