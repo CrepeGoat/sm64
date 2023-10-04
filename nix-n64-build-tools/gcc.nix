@@ -7,7 +7,8 @@
 , isl ? pkgs.isl
 , libmpc ? pkgs.libmpc
 , mpfr ? pkgs.mpfr
-, binutils-mips64-elf ? import ./binutils.nix { target = "mips64-elf"; }
+, binutils ? import ./binutils.nix { inherit target; }
+, target ? "mips-linux-gnu"
 ,
 }:
 
@@ -20,13 +21,13 @@ let
     # --infodir=#{info}
     # --mandir=#{man}
     # --libdir=#{lib}/mip64-elf-gcc/#{version_suffix}
-    "--target=mips64-elf"
+    "--target=${target}"
     "--with-arch=vr4300"
     "--enable-languages=c"
     "--without-headers"
     "--with-newlib"
-    "--with-gnu-as=mips64-elf-as"
-    "--with-gnu-ld=mips64-elf-ld"
+    "--with-gnu-as=${target}-as"
+    "--with-gnu-ld=${target}-ld"
     "--enable-checking=release"
     "--enable-shared"
     "--enable-shared-libgcc"
@@ -57,13 +58,13 @@ let
 in
 stdenv.mkDerivation rec {
   version = "10.2.0";
-  pname = "gcc-mips64-elf";
+  pname = "${target}-gcc";
   meta = {
-    description = "GNU GCC C toolchain for the mips64-elf target.";
+    description = "GNU GCC C toolchain for the ${target} target.";
     longDescription = ''
       The GNU Compiler Collection includes front ends for C, C++, Objective-C,
       Fortran, Ada, Go, and D, as well as libraries for these languages
-      (libstdc++, ...).  Compiled for the mips64-elf target.
+      (libstdc++, ...).  Compiled for the ${target} target.
     '';
     homepage = "https://gcc.gnu.org/";
     changelog = "https://gcc.gnu.org/gcc-10/changes.html";
@@ -75,7 +76,7 @@ stdenv.mkDerivation rec {
   });
   # TODO are these wrong?
   nativeBuildInputs = [ gmp isl libmpc mpfr ];
-  buildInputs = [ binutils-mips64-elf ];
+  buildInputs = [ binutils ];
 
   patches = [ ./gcc-10.2.0.patch ];
   # Note: needs to build from a different directory, for some reason

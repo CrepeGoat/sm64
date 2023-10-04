@@ -1,8 +1,9 @@
 { pkgs ? import <nixpkgs> { system = "x86_64-darwin"; } }:
 
 let
-  binutils-mips64-elf = import ./nix-n64-build-tools/binutils.nix { target = "mips64-elf"; };
-  gcc-mips64-elf = import ./nix-n64-build-tools/gcc-mips64-elf.nix {};
+  compilation-target = "mips64-elf";
+  binutils-mips = import ./nix-n64-build-tools/binutils.nix { target = compilation-target; };
+  gcc-mips = import ./nix-n64-build-tools/gcc.nix { target = compilation-target; };
 in
 
 pkgs.mkShell {
@@ -14,8 +15,8 @@ pkgs.mkShell {
     pkgs.coreutils
     pkgs.pkg-config
 
-    binutils-mips64-elf
-    gcc-mips64-elf
+    binutils-mips
+    gcc-mips
   ];
 
   shellHook = ''
