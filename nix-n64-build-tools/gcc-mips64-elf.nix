@@ -1,12 +1,13 @@
 # based on https://github.com/tehzz/homebrew-n64-dev/blob/master/Formula/mips64-elf-gcc.rb
 
-{ lib
-, stdenv
-, gmp
-, isl
-, libmpc
-, mpfr
-, binutils-mips64-elf
+{ pkgs ? import <nixpkgs> { system = "x86_64-darwin"; }
+, lib ? pkgs.lib
+, stdenv ? pkgs.stdenv
+, gmp ? pkgs.gmp
+, isl ? pkgs.isl
+, libmpc ? pkgs.libmpc
+, mpfr ? pkgs.mpfr
+, binutils-mips64-elf ? import ./binutils.nix { target = "mips64-elf"; }
 ,
 }:
 

@@ -1,16 +1,8 @@
 { pkgs ? import <nixpkgs> { system = "x86_64-darwin"; } }:
 
 let
-  binutils-mips64-elf = (
-    import ./nix-n64-build-tools/binutils.nix {
-      inherit (pkgs) lib stdenv gnumake;
-      target = "mips64-elf";
-    }
-  );
-  gcc-mips64-elf = (import ./nix-n64-build-tools/gcc-mips64-elf.nix {
-    inherit (pkgs) lib stdenv gmp isl libmpc mpfr;
-    inherit binutils-mips64-elf;
-  });
+  binutils-mips64-elf = import ./nix-n64-build-tools/binutils.nix { target = "mips64-elf"; };
+  gcc-mips64-elf = import ./nix-n64-build-tools/gcc-mips64-elf.nix {};
 in
 
 pkgs.mkShell {
