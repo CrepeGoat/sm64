@@ -56,4 +56,7 @@ stdenv.mkDerivation rec {
   # installPhase = ''
   #   make install
   # '';
+  doCheck = true;
+  checkTarget = "check";
+  checkFlags = [ "-k" ];
 }
