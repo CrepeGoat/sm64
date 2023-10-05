@@ -89,5 +89,8 @@ stdenv.mkDerivation rec {
   preBuild = ''
     buildFlagsArray+=(-j$NIX_BUILD_CORES)
   '';
+  doCheck = true;
+  checkTarget = "check";
+  checkFlags = [ "-k" ];
   dontStrip = true;
 }
