@@ -48,14 +48,13 @@ stdenv.mkDerivation rec {
     sha256 = "1p6g02h5l0r5ihiaa3mnayl0njvi1yr8ybidsx7b3zvpdgqqa738";
   });
   nativeBuildInputs = [ gnumake ];
-  # buildInputs = [gettext zlib];
-  buildPhase = ''
+
+  configurePhase = ''
+    BUILD_DIR=$(mktemp -d)
+    cd $BUILD_DIR
+
     ${src}/configure ${lib.strings.concatStringsSep " " config_flags}
-    make -j$NIX_BUILD_CORES
   '';
-  # installPhase = ''
-  #   make install
-  # '';
   doCheck = true;
   checkTarget = "check";
   checkFlags = [ "-k" ];
