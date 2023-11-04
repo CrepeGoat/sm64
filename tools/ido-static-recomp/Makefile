@@ -1,3 +1,5 @@
+include ../../util.mk
+
 # Build options can be changed by modifying the makefile or by building with 'make SETTING=value'.
 # It is also possible to override the settings in Defaults in a file called .make_options as 'SETTING=value'.
 
@@ -46,8 +48,8 @@ endif
 RABBITIZER := tools/rabbitizer
 RABBITIZER_LIB := $(RABBITIZER)/build/librabbitizerpp.a
 
-CC    := gcc
-CXX   := g++
+CC    := '$(GCC_ALIAS)'
+CXX   := '$(G++_ALIAS)'
 STRIP := strip
 
 CSTD         ?= -std=c11
