@@ -308,28 +308,36 @@ IQUE_LD_PATH := $(TOOLS_DIR)/ique_ld
 
 # detect prefix for MIPS toolchain
 ifneq      ($(call find-command,mips-linux-gnu-ld),)
-  CROSS := mips-linux-gnu-
+  CROSS      := mips-linux-gnu-
+  ZIG_TARGET := mips-linux-gnu
 else ifneq ($(call find-command,mips-unknown-linux-gnu-ld),)
-  CROSS := mips-unknown-linux-gnu-
+  CROSS      := mips-unknown-linux-gnu-
+  ZIG_TARGET := mips-linux-gnu
 else ifneq ($(call find-command,mips64-linux-gnu-ld),)
-  CROSS := mips64-linux-gnu-
+  CROSS      := mips64-linux-gnu-
+  ZIG_TARGET := mips64-linux-gnu
 else ifneq ($(call find-command,mips64-unknown-linux-gnu-ld),)
-  CROSS := mips64-unknown-linux-gnu-
+  CROSS      := mips64-unknown-linux-gnu-
+  ZIG_TARGET := mips64-linux-gnu
 else ifneq ($(call find-command,mips-elf-ld),)
-  CROSS := mips-elf-
+  CROSS      := mips-elf-
+  ZIG_TARGET := mips-freestanding-elf
 else ifneq ($(call find-command,mips-none-elf-ld),)
-  CROSS := mips-none-elf-
+  CROSS      := mips-none-elf-
+  ZIG_TARGET := mips-freestanding-elf
 else ifneq ($(call find-command,mips64-elf-ld),)
-  CROSS := mips64-elf-
+  CROSS      := mips64-elf-
+  ZIG_TARGET := mips64-freestanding-elf
 else ifneq ($(call find-command,mips64-none-elf-ld),)
-  CROSS := mips64-none-elf-
+  CROSS      := mips64-none-elf-
+  ZIG_TARGET := mips64-freestanding-elf
 else
   $(error Unable to detect a suitable MIPS toolchain installed)
 endif
 
 AS            := $(CROSS)as
 ifeq ($(COMPILER),gcc)
-  CC          := $(CROSS)gcc
+  CC          := zig cc --target=$(ZIG_TARGET)
 else
   ifeq ($(USE_QEMU_IRIX),1)
     IRIX_ROOT := $(TOOLS_DIR)/ido5.3_compiler
