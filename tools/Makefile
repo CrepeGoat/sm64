@@ -66,8 +66,8 @@ $(1): $($1_SOURCES)
 endef
 
 ido-static-recomp:
-	@$(MAKE) -C ido-static-recomp setup
-	@$(MAKE) -C ido-static-recomp
+	@$(MAKE) -C ido-static-recomp setup CC=$(CC) CXX=$(CXX) AR=$(AR)
+	@$(MAKE) -C ido-static-recomp CC=$(CC) CXX=$(CXX) AR=$(AR)
 
 $(foreach p,$(BUILD_PROGRAMS),$(eval $(call COMPILE,$(p))))
 

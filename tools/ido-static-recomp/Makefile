@@ -48,8 +48,8 @@ endif
 RABBITIZER := tools/rabbitizer
 RABBITIZER_LIB := $(RABBITIZER)/build/librabbitizerpp.a
 
-CC    := $(GCC_ALIAS)
-CXX   := $(G++_ALIAS)
+CC    := gcc
+CXX   := g++
 STRIP := strip
 
 CSTD         ?= -std=c11
