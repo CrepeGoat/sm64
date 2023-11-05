@@ -136,7 +136,7 @@ $(RECOMP_ELF): WARNINGS  += -Wpedantic -Wno-shadow -Wno-unused-variable -Wno-unu
 all: $(TARGET_BINARIES) $(ERR_STRS)
 
 setup:
-	$(MAKE) -C $(RABBITIZER) static CC=$(CC) CXX=$(CXX) DEBUG=$(DEBUG)
+	$(MAKE) -C $(RABBITIZER) static CC='$(CC)' CXX='$(CXX)' DEBUG=$(DEBUG)
 	$(MAKE) $(RECOMP_ELF)
 
 clean:
