@@ -1,3 +1,5 @@
+include ../../util.mk
+
 # Build options can be changed by modifying the makefile or by building with 'make SETTING=value'.
 # It is also possible to override the settings in Defaults in a file called .make_options as 'SETTING=value'.
 
@@ -134,7 +136,7 @@ $(RECOMP_ELF): WARNINGS  += -Wpedantic -Wno-shadow -Wno-unused-variable -Wno-unu
 all: $(TARGET_BINARIES) $(ERR_STRS)
 
 setup:
-	$(MAKE) -C $(RABBITIZER) static CC=$(CC) CXX=$(CXX) DEBUG=$(DEBUG)
+	$(MAKE) -C $(RABBITIZER) static CC='$(CC)' CXX='$(CXX)' DEBUG=$(DEBUG)
 	$(MAKE) $(RECOMP_ELF)
 
 clean:
