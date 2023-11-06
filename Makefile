@@ -485,12 +485,11 @@ endif
 
 clean:
 	$(RM) -r $(BUILD_DIR_BASE)
-	$(MAKE) -C $(TOOLS_DIR) clean
-	$(MAKE) -C $(TOOLS_DIR)/sm64tools clean
 
 distclean: clean
 	$(PYTHON) extract_assets.py --clean
-	$(MAKE) -C $(TOOLS_DIR) distclean
+	$(MAKE) -C $(TOOLS_DIR) clean
+	$(MAKE) -C $(TOOLS_DIR)/sm64tools clean
 
 test: $(ROM)
 	$(EMULATOR) $(EMU_FLAGS) $<
