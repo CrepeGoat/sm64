@@ -1,10 +1,11 @@
-{ lib
-, stdenv
-, gnumake
-, gcc
-# , gettext
-# , zlib
-,
+{
+  lib,
+  stdenv,
+  gnumake,
+  gcc
+  # , gettext
+  # , zlib
+  ,
 }:
 
 let
@@ -44,11 +45,16 @@ stdenv.mkDerivation rec {
     homepage = "https://www.gnu.org/software/binutils/";
   };
 
-  src = (builtins.fetchTarball {
-    url = "https://ftp.gnu.org/gnu/binutils/binutils-${version}.tar.xz";
-    sha256 = "1p6g02h5l0r5ihiaa3mnayl0njvi1yr8ybidsx7b3zvpdgqqa738";
-  });
-  nativeBuildInputs = [ gnumake gcc ];
+  src = (
+    builtins.fetchTarball {
+      url = "https://ftp.gnu.org/gnu/binutils/binutils-${version}.tar.xz";
+      sha256 = "1p6g02h5l0r5ihiaa3mnayl0njvi1yr8ybidsx7b3zvpdgqqa738";
+    }
+  );
+  nativeBuildInputs = [
+    gnumake
+    gcc
+  ];
   # buildInputs = [gettext zlib];
   buildPhase = ''
     CC=gcc ${src}/configure ${lib.strings.concatStringsSep " " config_flags}

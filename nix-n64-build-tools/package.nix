@@ -1,18 +1,18 @@
-{ pkgs ? import <nixpkgs> { system = "x86_64-darwin"; }
-, lib ? pkgs.lib
-, stdenv ? pkgs.stdenv
-, requireFile ? pkgs.requireFile
-, fetchFromGitHub ? pkgs.fetchFromGitHub
+{
+  pkgs ? import <nixpkgs> { system = "x86_64-darwin"; },
+  lib ? pkgs.lib,
+  stdenv ? pkgs.stdenv,
+  requireFile ? pkgs.requireFile,
+  fetchFromGitHub ? pkgs.fetchFromGitHub,
 
-, gcc ? pkgs.gcc12
-, gnumake ? pkgs.gnumake42
-, which ? pkgs.which
-, coreutils ? pkgs.coreutils
-, pkg-config ? pkgs.pkg-config
-, python3 ? pkgs.python3Minimal
+  gcc ? pkgs.gcc12,
+  gnumake ? pkgs.gnumake42,
+  which ? pkgs.which,
+  coreutils ? pkgs.coreutils,
+  pkg-config ? pkgs.pkg-config,
+  python3 ? pkgs.python3Minimal,
 
-, version ? "us"
-,
+  version ? "us",
 }:
 
 let
@@ -35,12 +35,18 @@ let
         nix-prefetch-url --type sha1 file:///path/to/${rom-name}
     '';
     sha1 = (
-      if version == "jp" then "8a20a5c83d6ceb0f0506cfc9fa20d8f438cafe51" else
-      if version == "us" then "9bef1128717f958171a4afac3ed78ee2bb4e86ce" else
-      if version == "eu" then "4ac5721683d0e0b6bbb561b58a71740845dceea9" else
-      if version == "sh" then "3f319ae697533a255a1003d09202379d78d5a2e0" else
-      if version == "cn" then "2e1db2780985a1f068077dc0444b685f39cd90ec" else
-      abort "invalid version ${version}: must be one of (jp, us, eu, sh, cn)"
+      if version == "jp" then
+        "8a20a5c83d6ceb0f0506cfc9fa20d8f438cafe51"
+      else if version == "us" then
+        "9bef1128717f958171a4afac3ed78ee2bb4e86ce"
+      else if version == "eu" then
+        "4ac5721683d0e0b6bbb561b58a71740845dceea9"
+      else if version == "sh" then
+        "3f319ae697533a255a1003d09202379d78d5a2e0"
+      else if version == "cn" then
+        "2e1db2780985a1f068077dc0444b685f39cd90ec"
+      else
+        abort "invalid version ${version}: must be one of (jp, us, eu, sh, cn)"
     );
   };
 
