@@ -1,25 +1,36 @@
 {
-  pkgs ? import <nixpkgs> { system = "x86_64-darwin"; },
-  lib ? pkgs.lib,
-  stdenv ? pkgs.stdenv,
-  requireFile ? pkgs.requireFile,
-  fetchFromGitHub ? pkgs.fetchFromGitHub,
-
-  gcc ? pkgs.gcc12,
-  gnumake ? pkgs.gnumake42,
-  which ? pkgs.which,
-  coreutils ? pkgs.coreutils,
-  pkg-config ? pkgs.pkg-config,
-  python3 ? pkgs.python3Minimal,
-
+  # nix stdlib
+  stdenv,
+  requireFile,
+  # nixpkgs (build platform)
+  cc,
+  gnumake42,
+  python3,
+  which,
+  coreutils,
+  # parameters
   version ? "us",
+  compiler ? "gcc"
 }:
 
 let
-  binutils-mips64-elf = import ./binutils-mips64-elf.nix {
-    inherit lib stdenv gcc;
-    gnumake = gnumake;
-  };
+  hostPlatformCheck =
+    if stdenv.hostPlatform.isMips then
+      null
+    else
+      abort ''
+        The host platform target must be a MIPS target (e.g., `mips-linux-gnu`).
+
+        Consider setting the `crossSystem` parameter when importing `nixpkgs`:
+        ```nix
+        pkgs = import <nixpkgs> {
+          crossSystem = (import <nixpkgs/lib>).systems.examples.mips-linux-gnu;
+        };
+        ```
+
+        For more details, see
+        https://nixos.org/manual/nixpkgs/stable/#sec-cross-usage
+      '';
 
   rom-name = "sm64.${version}.z64";
   og-rom = requireFile {
@@ -50,25 +61,27 @@ let
     );
   };
 
+  src = ./..;
 in
 stdenv.mkDerivation {
-  inherit version;
   pname = "sm64-compiled";
+  inherit version;
 
-  src = fetchFromGitHub {
-    owner = "n64decomp";
-    repo = "sm64";
-    rev = "9921382a68bb0c865e5e45eb594d9c64db59b1af";
-    hash = "sha256-exrKy3nrvahyNDDmay/K7f6uU8UHNnUb9/QxOGjQaXU=";
-  };
+  # src = fetchFromGitHub {
+  #   owner = "n64decomp";
+  #   repo = "sm64";
+  #   rev = "9921382a68bb0c865e5e45eb594d9c64db59b1af";
+  #   hash = "sha256-exrKy3nrvahyNDDmay/K7f6uU8UHNnUb9/QxOGjQaXU=";
+  # };
+  inherit src;
 
+  # pulled from https://github.com/n64decomp/sm64#step-1-install-dependencies-1
   nativeBuildInputs = [
-    gnumake
+    cc
+    gnumake42 # v4.4 breaks the build!
+    python3
     which
     coreutils
-    pkg-config
-    python3
-    binutils-mips64-elf
   ];
 
   dontPatch = true;
@@ -77,23 +90,27 @@ stdenv.mkDerivation {
     NEW_PATH_DIR=$(mktemp -d)
     export PATH="$NEW_PATH_DIR:$PATH"
 
-    MAKE_PATH=${gnumake}/bin/make
+    MAKE_PATH=${gnumake42}/bin/make
     ln -s $MAKE_PATH $NEW_PATH_DIR/gmake
 
-    CC_PATH=${stdenv.cc}/bin/clang
+    CC_PATH=${cc}/bin/clang
     ln -s $CC_PATH $NEW_PATH_DIR/gcc
+    file $NEW_PATH_DIR/gcc
 
-    CPP_PATH=${stdenv.cc}/bin/clang++
-    ln -s $CPP_PATH $NEW_PATH_DIR/g++
+    CPP_PATH=${cc}/bin/clang++
+    ln -s $CPP_PATH "$NEW_PATH_DIR/g++"
+    file "$NEW_PATH_DIR/g++"
 
-    cp ${og-rom} ../source/baserom.${version}.z64
+    NEW_SRC=$(mktemp -d)
+    cp -R ${src}/ $NEW_SRC
+    cp ${og-rom} $NEW_SRC/baserom.${version}.z64
   '';
   buildPhase = ''
     runHook preBuild
-    gmake VERSION=${version} VERBOSE=1 -j$NIX_BUILD_CORES
+    gmake VERSION=${version} VERBOSE=1 COMPILER=${compiler} -j$NIX_BUILD_CORES
     runHook postBuild
   '';
   installPhase = ''
-    cp ./build/${version}/${rom-name} $out/${rom-name}
+    cp $NEW_SRC/build/${version}/${rom-name} $out/${rom-name}
   '';
 }
