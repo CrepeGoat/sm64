@@ -1,6 +1,7 @@
 {
   # nix stdlib
   stdenv,
+  lib,
   requireFile,
   # nixpkgs (build platform)
   cc,
@@ -10,28 +11,24 @@
   coreutils,
   # parameters
   version ? "us",
-  compiler ? "gcc"
+  compiler ? "gcc",
 }:
 
+assert lib.assertMsg stdenv.hostPlatform.isMips ''
+  The host platform must be a MIPS target (e.g., `mips-linux-gnu`).
+
+  Consider setting the `crossSystem` parameter when importing `nixpkgs`:
+  ```nix
+  pkgs = import <nixpkgs> {
+    crossSystem = (import <nixpkgs/lib>).systems.examples.mips-linux-gnu;
+  };
+  ```
+
+  For more details, see
+  https://nixos.org/manual/nixpkgs/stable/#sec-cross-usage
+'';
+
 let
-  hostPlatformCheck =
-    if stdenv.hostPlatform.isMips then
-      null
-    else
-      abort ''
-        The host platform target must be a MIPS target (e.g., `mips-linux-gnu`).
-
-        Consider setting the `crossSystem` parameter when importing `nixpkgs`:
-        ```nix
-        pkgs = import <nixpkgs> {
-          crossSystem = (import <nixpkgs/lib>).systems.examples.mips-linux-gnu;
-        };
-        ```
-
-        For more details, see
-        https://nixos.org/manual/nixpkgs/stable/#sec-cross-usage
-      '';
-
   rom-name = "sm64.${version}.z64";
   og-rom = requireFile {
     name = rom-name;

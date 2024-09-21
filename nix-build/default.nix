@@ -1,6 +1,6 @@
 {
   version ? "us",
-  compiler ? "gcc"
+  compiler ? "gcc",
 }:
 
 let
@@ -12,6 +12,11 @@ let
 in
 pkgs.callPackage ./package.nix {
   inherit version compiler;
-  inherit (pkgs.buildPackages) gnumake42 python3 which coreutils;
+  inherit (pkgs.buildPackages)
+    gnumake42
+    python3
+    which
+    coreutils
+    ;
   cc = pkgs.buildPackages.stdenv.cc;
 }
