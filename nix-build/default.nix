@@ -7,7 +7,9 @@ let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
   pkgs = import nixpkgs {
     # https://nixos.org/manual/nixpkgs/stable/#sec-cross-usage
-    crossSystem = (import <nixpkgs/lib>).systems.examples.mips-linux-gnu;
+    crossSystem = {
+      config = "mips-unknown-linux-gnu";
+    };
   };
 in
 pkgs.callPackage ./package.nix {

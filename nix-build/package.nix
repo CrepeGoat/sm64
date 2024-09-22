@@ -20,7 +20,7 @@ assert lib.assertMsg stdenv.hostPlatform.isMips ''
   Consider setting the `crossSystem` parameter when importing `nixpkgs`:
   ```nix
   pkgs = import <nixpkgs> {
-    crossSystem = (import <nixpkgs/lib>).systems.examples.mips-linux-gnu;
+    crossSystem = { config = "mips-unknown-linux-gnu"; };
   };
   ```
 
