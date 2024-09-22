@@ -19,6 +19,7 @@ pkgs.callPackage ./package.nix {
     python3
     which
     coreutils
+    util-linux
     ;
   cc = pkgs.buildPackages.gccStdenv.cc;
 }

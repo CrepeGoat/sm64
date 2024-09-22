@@ -9,6 +9,7 @@
   python3,
   which,
   coreutils,
+  util-linux,
   # parameters
   version ? "us",
   compiler ? "ido",
@@ -79,6 +80,7 @@ stdenv.mkDerivation {
     python3
     which
     coreutils
+    util-linux
   ];
 
   dontPatch = true;
