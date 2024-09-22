@@ -11,7 +11,7 @@
   coreutils,
   # parameters
   version ? "us",
-  compiler ? "gcc",
+  compiler ? "ido",
 }:
 
 assert lib.assertMsg stdenv.hostPlatform.isMips ''
@@ -83,7 +83,7 @@ stdenv.mkDerivation {
 
   dontPatch = true;
   dontConfigure = true;
-  preBuild = ''
+  postUnpack = ''
     NEW_PATH_DIR=$(mktemp -d)
     export PATH="$NEW_PATH_DIR:$PATH"
 

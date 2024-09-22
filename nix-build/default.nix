@@ -1,6 +1,6 @@
 {
   version ? "us",
-  compiler ? "gcc",
+  compiler ? "ido",
 }:
 
 let
