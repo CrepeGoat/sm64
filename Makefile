@@ -403,7 +403,7 @@ else
 endif
 
 # Check code syntax with host compiler
-CC_CHECK := gcc
+CC_CHECK := $(CROSS)gcc
 CC_CHECK_CFLAGS := -fsyntax-only -fsigned-char $(CC_CFLAGS) $(TARGET_CFLAGS) -std=gnu90 -Wall -Wextra -Wno-format-security -Wno-main -DNON_MATCHING -DAVOID_UB $(DEF_INC_CFLAGS)
 
 # C compiler options
@@ -422,7 +422,7 @@ ifeq ($(shell getconf LONG_BIT), 32)
   export QEMU_GUEST_BASE := 1
 else
   # Ensure that gcc treats the code as 32-bit
-  CC_CHECK_CFLAGS += -m32
+#   CC_CHECK_CFLAGS += -m32
 endif
 
 # Prevent a crash with -sopt
