@@ -90,14 +90,6 @@ stdenv.mkDerivation {
     MAKE_PATH=${gnumake42}/bin/make
     ln -s $MAKE_PATH $NEW_PATH_DIR/gmake
 
-    CC_PATH=${cc}/bin/clang
-    ln -s $CC_PATH $NEW_PATH_DIR/gcc
-    file $NEW_PATH_DIR/gcc
-
-    CPP_PATH=${cc}/bin/clang++
-    ln -s $CPP_PATH "$NEW_PATH_DIR/g++"
-    file "$NEW_PATH_DIR/g++"
-
     NEW_SRC=$(mktemp -d)
     cp -R ${src}/ $NEW_SRC
     cp ${og-rom} $NEW_SRC/baserom.${version}.z64

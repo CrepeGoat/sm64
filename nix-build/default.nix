@@ -18,5 +18,5 @@ pkgs.callPackage ./package.nix {
     which
     coreutils
     ;
-  cc = pkgs.buildPackages.stdenv.cc;
+  cc = pkgs.buildPackages.gccStdenv.cc;
 }
