@@ -18,7 +18,6 @@ pkgs.callPackage ./package.nix {
     gnumake42
     python3
     which
-    coreutils
     util-linux
     ;
   cc = pkgs.buildPackages.gccStdenv.cc;

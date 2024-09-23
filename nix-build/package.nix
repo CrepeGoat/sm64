@@ -8,7 +8,6 @@
   gnumake42,
   python3,
   which,
-  coreutils,
   util-linux,
   # parameters
   version ? "us",
@@ -59,7 +58,7 @@ let
     );
   };
 
-  src = ./..;
+  src = builtins.path { name = "sm64"; path = ./..; };
 in
 stdenv.mkDerivation {
   pname = "sm64-compiled";
@@ -79,7 +78,6 @@ stdenv.mkDerivation {
     gnumake42 # v4.4 breaks the build!
     python3
     which
-    coreutils
     util-linux
   ];
 
@@ -92,9 +90,7 @@ stdenv.mkDerivation {
     MAKE_PATH=${gnumake42}/bin/make
     ln -s $MAKE_PATH $NEW_PATH_DIR/gmake
 
-    NEW_SRC=$(mktemp -d)
-    cp -R ${src}/ $NEW_SRC
-    cp ${og-rom} $NEW_SRC/baserom.${version}.z64
+    cp ${og-rom} ./baserom.${version}.z64
   '';
   buildPhase = ''
     runHook preBuild
@@ -102,6 +98,6 @@ stdenv.mkDerivation {
     runHook postBuild
   '';
   installPhase = ''
-    cp $NEW_SRC/build/${version}/${rom-name} $out/${rom-name}
+    cp -P ./build/${version}/${rom-name} $out
   '';
 }
