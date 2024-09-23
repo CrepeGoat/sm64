@@ -14,6 +14,12 @@
   compiler ? "ido",
 }:
 
+assert lib.assertMsg (with stdenv.buildPlatform; isx86_64 || isPower) ''
+  The build platform must use either an x86_64 or PowerPC architecture.
+
+  `gcc` on these architectures support the `-m32` flag:
+  https://gcc.gnu.org/onlinedocs/gcc/Option-Index.html#Option-Index_op_letter-M
+'';
 assert lib.assertMsg stdenv.hostPlatform.isMips ''
   The host platform must be a MIPS target (e.g., `mips-linux-gnu`).
 
@@ -61,15 +67,9 @@ let
   src = builtins.path { name = "sm64"; path = ./..; };
 in
 stdenv.mkDerivation {
-  pname = "sm64-compiled";
-  inherit version;
+  pname = "sm64-recompiled";
+  version = "${version}-${compiler}";
 
-  # src = fetchFromGitHub {
-  #   owner = "n64decomp";
-  #   repo = "sm64";
-  #   rev = "9921382a68bb0c865e5e45eb594d9c64db59b1af";
-  #   hash = "sha256-exrKy3nrvahyNDDmay/K7f6uU8UHNnUb9/QxOGjQaXU=";
-  # };
   inherit src;
 
   # pulled from https://github.com/n64decomp/sm64#step-1-install-dependencies-1
@@ -100,4 +100,12 @@ stdenv.mkDerivation {
   installPhase = ''
     cp -P ./build/${version}/${rom-name} $out
   '';
+
+  meta = {
+    description = "A Super Mario 64 decompilation, brought to you by a bunch of clever folks.";
+    license = lib.licenses.cc0;
+    downloadPage = "https://github.com/n64decomp/sm64";
+    branch = "master";
+    changelog = ./../CHANGES;
+  };
 }
